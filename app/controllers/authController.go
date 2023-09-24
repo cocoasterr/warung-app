@@ -25,13 +25,11 @@ func (c *AuthController) createToken(username string, expiration time.Time) (str
 		return "", err
 	}
 	secretKey := os.Getenv("SECRET_KEY")
-	// Membuat token akses dengan masa berlaku singkat
 	accessToken := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"username": username,
 		"exp":      expiration.Unix(),
 	})
 
-	// Menandatangani token akses dengan kunci rahasia
 	accessTokenString, err := accessToken.SignedString([]byte(secretKey))
 	if err != nil {
 		return "", err
@@ -41,17 +39,15 @@ func (c *AuthController) createToken(username string, expiration time.Time) (str
 }
 
 func (c *AuthController) createRefreshToken(username string) (string, error) {
-	// Membuat token refresh dengan masa berlaku lebih lama
 	if err := godotenv.Load(); err != nil {
 		return "", err
 	}
 	secretKey := os.Getenv("SECRET_KEY")
 	refreshToken := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"username": username,
-		"exp":      time.Now().Add(time.Hour * 24 * 7).Unix(), // Kadaluarsa dalam 7 hari
+		"exp":      time.Now().Add(time.Hour * 24 * 7).Unix(),
 	})
 
-	// Menandatangani token refresh dengan kunci rahasia
 	refreshTokenString, err := refreshToken.SignedString([]byte(secretKey))
 	if err != nil {
 		return "", err

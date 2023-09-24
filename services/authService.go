@@ -45,13 +45,9 @@ func (s *AuthService) PayloadRegisterCheck(payload map[string]interface{}) error
 }
 func (s *AuthService) HashPassword(password string) string {
 	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
-	// if err != nil {
-	// 	return "", err
-	// }
 	return string(hashedPassword)
 }
 func (s *AuthService) CheckPasswordHash(password, hash string) bool {
-	// Compare the password with its hash
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 	return err == nil
 }
